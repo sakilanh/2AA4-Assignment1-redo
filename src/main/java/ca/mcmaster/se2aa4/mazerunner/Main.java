@@ -15,6 +15,7 @@ public class Main {
     private static final Logger logger = LogManager.getLogger();
 
     public static void main(String[] args) {
+        /* 
         logger.info("** Starting Maze Runner");
        
         Options options = new Options();
@@ -54,5 +55,9 @@ public class Main {
             logger.error("/!\\\\ An error has occured /!\\\\" + e.getMessage());
         }
         logger.info("** End of Maze Runner");
+        */
+
+        Maze maze = new Maze("./examples/tiny.maz.txt");
+        logger.info(maze.toString());
     }
 }
