@@ -10,9 +10,17 @@ public class Maze {
     private boolean[][] maze;
     private int[][] entryPoints;
 
-    public Maze(String filename) {
+    public Maze(String filename) throws IllegalArgumentException {
         this.maze = MazeReader.readMazeFromFile(filename);
         this.entryPoints = MazeReader.locateEntryPoints(maze);
+    }
+
+    public boolean[][] getMazeArray() {
+        return this.maze;
+    }
+
+    public int[][] getEntryPoints() {
+        return this.entryPoints;
     }
 
     private static void logError(Exception e) {

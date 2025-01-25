@@ -28,6 +28,7 @@ public final class MazeReader {
             }
         } catch (Exception e) {
             logError(e);
+            throw defaultError;
         }
         if (!validateFile(mazeTxt)) {
             logError(defaultError);
@@ -51,16 +52,13 @@ public final class MazeReader {
     }
 
     private static boolean validateFile(ArrayList<String> mazeTxt) {
-        try {
-            int rowLen = mazeTxt.get(0).length();
-            for (String row : mazeTxt) {
-                if (row.length() != rowLen) return false;
-                for (char c : row.toCharArray()) {
-                    if (c != '#' && c != ' ') return false;
-                }
+        if (mazeTxt.size() < 3 || mazeTxt.get(0).length() < 3) return false;
+        int rowLen = mazeTxt.get(0).length();
+        for (String row : mazeTxt) {
+            if (row.length() != rowLen) return false;
+            for (char c : row.toCharArray()) {
+                if (c != '#' && c != ' ') return false;
             }
-        } catch (Exception e) {
-            return false;
         }
         return true;
     }
@@ -97,6 +95,8 @@ public final class MazeReader {
             logError(defaultError);
             throw defaultError;
         }
+        logger.info("Entrance: (" + entryPoints[0][0] + ", " + entryPoints[0][1] + ")");
+        logger.info("Exit: (" + entryPoints[1][0] + ", " + entryPoints[1][1] + ")");
         return entryPoints;
     }
 }
