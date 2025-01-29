@@ -1,9 +1,5 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -11,11 +7,10 @@ import org.apache.commons.cli.Options;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import ca.mcmaster.se2aa4.mazerunner.MazeSolver.MazeExplorer;
-
 public class Main {
     private static final Logger logger = LogManager.getLogger();
 
+    @SuppressWarnings("UseSpecificCatch")
     public static void main(String[] args) {
         /* 
         logger.info("** Starting Maze Runner");
@@ -61,8 +56,28 @@ public class Main {
 
         logger.info("** Starting Maze Runner");
 
+        Options options = new Options();
+        options.addOption("i", true, "Path to the input maze file");
+        CommandLineParser parser = new DefaultParser();
+        String inputFilePath = "";
+
+        try {
+            // Parse command-line arguments
+            CommandLine cmd = parser.parse(options, args);
+
+            if (cmd.hasOption("i")) {
+                inputFilePath = cmd.getOptionValue("i");
+                logger.info("**** Input file specified: " + inputFilePath);
+
+            } else {
+                logger.error("No input file specified. Use the -i flag to specify the maze file.");
+            }
+        } catch (Exception e) {
+            logger.error("/!\\\\ An error has occured /!\\\\" + e.getMessage());
+        }
+
         // Step 1: Load the maze
-        Maze maze = new Maze("./examples/tiny.maz.txt");
+        Maze maze = MazeReader.readMazeFromFile(inputFilePath);
         logger.info("Loaded Maze:");
         logger.info(maze.toString());
 
@@ -75,7 +90,7 @@ public class Main {
         }
 
         // Step 3: Test MazeExplorer manually
-        MazeSolver.MazeExplorer explorer = new MazeSolver.MazeExplorer(maze);
+        MazeExplorer explorer = maze.getExplorer();
         logger.info("Starting manual exploration...");
 
         // Manually control the explorer

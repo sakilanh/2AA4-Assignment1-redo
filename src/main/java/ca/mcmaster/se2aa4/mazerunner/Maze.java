@@ -1,18 +1,16 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class Maze {
 
-    private static final Logger logger = LogManager.getLogger();
+    private final boolean[][] maze;
+    private final int[][] entryPoints;
+    private MazeExplorer explorer;
 
-    private boolean[][] maze;
-    private int[][] entryPoints;
+    private String filepath;
 
-    public Maze(String filename) throws IllegalArgumentException {
-        this.maze = MazeReader.readMazeFromFile(filename);
-        this.entryPoints = MazeReader.locateEntryPoints(maze);
+    protected Maze(boolean[][] maze, int[][] entryPoints) {
+        this.maze = maze;
+        this.entryPoints = entryPoints;
     }
 
     public boolean[][] getMazeArray() {
@@ -23,21 +21,39 @@ public class Maze {
         return this.entryPoints;
     }
 
-    private static void logError(Exception e) {
-        logger.error("/!\\\\ An error has occured /!\\\\" + e.getMessage());
+    public String getFilepath() {
+        return this.filepath;
     }
 
+    public MazeExplorer getExplorer() {
+        return this.explorer;
+    }
+
+    public MazeExplorer addExplorer() {
+        if (explorer == null) {
+            MazeExplorer newExplorer = new MazeExplorer(this);
+            this.explorer = newExplorer;
+            return newExplorer;
+        } else {
+            return this.explorer;
+        }
+    }
+
+    @Override
     public String toString() {
         String mazeString = "\n";
-        for (int i = 0; i < maze.length; i++) {
+        for (boolean[] maze1 : maze) {
             for (int j = 0; j < maze[0].length; j++) {
-                if (maze[i][j]) mazeString += "#";
-                else mazeString += " ";
+                if (maze1[j]) {
+                    mazeString += "#";
+                } else {
+                    mazeString += " ";
+                }
             }
             mazeString += "\n";
         }
-        mazeString.concat("\nEntrance at: (" + entryPoints[0][0] + ", " + entryPoints[0][1] + ")");
-        mazeString.concat("\nExit at: (" + entryPoints[1][0] + ", " + entryPoints[1][1] + ")");
+        mazeString += "\nEntrance at: (" + entryPoints[0][0] + ", " + entryPoints[0][1] + ")";
+        mazeString += "\nExit at: (" + entryPoints[1][0] + ", " + entryPoints[1][1] + ")";
         return mazeString;
     }
 }

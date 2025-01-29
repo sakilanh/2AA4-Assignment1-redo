@@ -3,14 +3,18 @@ package ca.mcmaster.se2aa4.mazerunner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public final class MazeReader {
 
     private static final Logger logger = LogManager.getLogger();  
-    private static IllegalArgumentException defaultError = new IllegalArgumentException("The specified file is not a valid maze.");
-
+    private static final IllegalArgumentException defaultError = new IllegalArgumentException("The specified file is not a valid maze.");
+    @SuppressWarnings("FieldMayBeFinal")
+    private static ArrayList<Maze> loadedMazes = new ArrayList<>();
+    
+    @SuppressWarnings("unused")
     private MazeReader() {
 
     }
@@ -19,8 +23,14 @@ public final class MazeReader {
         logger.error("/!\\\\ An error has occured /!\\\\" + e.getMessage());
     }
 
-    public static boolean[][] readMazeFromFile(String filepath) throws IllegalArgumentException { 
-        ArrayList<String> mazeTxt = new ArrayList<String>();
+    public static Maze readMazeFromFile(String filepath) throws IllegalArgumentException { 
+        for (Maze m : loadedMazes) {
+            if (m.getFilepath().equals(filepath)) {
+                return m;
+            }
+        }
+        ArrayList<String> mazeTxt = new ArrayList<>();
+        String logLine = "";
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {   
             String line;
             while ((line = reader.readLine()) != null) {
@@ -40,14 +50,19 @@ public final class MazeReader {
                 for (int j = 0; j < mazeTxt.get(i).length(); j++) {
                     if (mazeTxt.get(i).charAt(j) == '#') {
                         maze[i][j] = true;
-                        logger.info("WALL ");
+                        logLine += "WALL ";
+                        //logger.info("WALL ");
                     } else {
                         maze[i][j] = false;
-                        logger.info("PASS ");
-                    }      
+                        logLine += "PASS ";
+                        //logger.info("PASS ");
+                    }     
                 }
-            }        
-            return maze;         
+                logger.info(logLine);
+            }
+            Maze newMaze = new Maze(maze, locateEntryPoints(maze));     
+            loadedMazes.add(newMaze);
+            return newMaze;
         }
     }
 
