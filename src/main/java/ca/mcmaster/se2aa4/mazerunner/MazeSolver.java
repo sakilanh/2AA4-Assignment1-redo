@@ -14,7 +14,9 @@ public final class MazeSolver {
         explorer.explore();
         if (Arrays.equals(explorer.getPos(), maze.getEntryPoints()[1])) {
             return explorer.getPath();
-        } else return null;
+        } else {
+            return null;
+        }
     }
 
     public static boolean verify(Maze maze, String sol) {
@@ -29,26 +31,57 @@ public final class MazeSolver {
         String validCharacters = "FLR";
         String factorizedPath = "";
         int count = 0;
-        char currentChar;
+        //char currentChar;
         char countingChar = 'a';
-        for (int i = 0; i < path.length(); i++) {
-            currentChar = path.charAt(i);
+        for (char currentChar : path.toCharArray()) {
             if (validCharacters.indexOf(currentChar) == -1) {
                 throw new IllegalArgumentException("Invalid path string.");
             }
             if (currentChar == countingChar) {
                 count++;
             } else {
-                factorizedPath += String.valueOf(count) + countingChar;
+                if (count != 1) {
+                    factorizedPath += String.valueOf(count);
+                }
+                factorizedPath += countingChar;
                 countingChar = currentChar;
                 count = 1;
             }
         }
-        return factorizedPath;
+        if (count != 1) {
+            factorizedPath += String.valueOf(count);
+        }
+        factorizedPath += countingChar;
+        return factorizedPath.substring(2);
     }
 
-    //todo
-    public static String expandPath(String path) {
-        return null;
+    @SuppressWarnings("empty-statement")
+    public static String expandPath(String path) throws IllegalArgumentException {
+        if (path.length() < 1) {
+            throw new IllegalArgumentException("Invalid path string.");
+        }
+        if (Character.isDigit(path.charAt(path.length() - 1))) {
+            throw new IllegalArgumentException("Invalid path string.");
+        }
+        String validCharacters = "FLR";
+        String expandedPath = "";
+        int charCount = 1;
+        int j;
+        char currentChar;
+        for (int i = 0; i < path.length(); i++) {
+            currentChar = path.charAt(i);
+            if (Character.isDigit(currentChar)) {
+                for (j = i; Character.isDigit(path.charAt(j)); j++);
+                charCount = Integer.parseInt(path.substring(i, j));
+            } else if (validCharacters.indexOf(currentChar) == -1) {
+                throw new IllegalArgumentException("Invalid path string.");
+            } else {
+                for (int k = 0; k < charCount; k++) {
+                    expandedPath += currentChar;
+                }
+                charCount = 1;
+            }
+        }
+        return expandedPath;
     }
 }

@@ -2,7 +2,7 @@ package ca.mcmaster.se2aa4.mazerunner;
 
 public class MazeExplorer {
 
-    static enum Facing {
+    public static enum Facing {
 
         UP, RIGHT, DOWN, LEFT;
 
@@ -20,7 +20,6 @@ public class MazeExplorer {
     private final int[] entrance;
     private final int[] exit;
     private int[] pos;
-
     private Facing facing;
 
     protected MazeExplorer(Maze maze) {
@@ -48,10 +47,20 @@ public class MazeExplorer {
     public int[] getPos() {
         return pos;
     }
-    
-    /*public void setPos(int[] pos) throws IllegalArgumentException {
+
+    public void setPos(int[] pos) throws IllegalArgumentException {
+        if (pos.length != 2) {
+            throw new IllegalArgumentException("New pos has wrong length.");
+        }
+        try {
+            if (grid[pos[0]][pos[1]]) {
+                throw new IllegalArgumentException("New position is a wall.");
+            }
+        } catch (IndexOutOfBoundsException e) {
+            throw new IllegalArgumentException("New position is out of bounds.");
+        }
         this.pos = pos;
-    }*/
+    }
 
     public void explore(int maxSteps) {
         int steps = 1;
@@ -71,13 +80,12 @@ public class MazeExplorer {
             steps++;
         }
     }
-    
 
     public void explore() {
-        this.explore(1000);
+        this.explore(100000);
     }
 
-            // Turns the character right and appends 'R' to the path
+    // Turns the character right and appends 'R' to the path
     private void turnRight() {
         facing = facing.turnRight(); // Update facing direction using Facing enum
         path += 'R'; // Append 'R' to the path
@@ -89,7 +97,6 @@ public class MazeExplorer {
         path += 'L'; // Append 'L' to the path
     }
 
-
     public void follow(String directions) throws IllegalArgumentException {
         for (char c : directions.toCharArray()) {
             switch (c) {
@@ -98,13 +105,15 @@ public class MazeExplorer {
                         throw new IllegalArgumentException("Path provided results in a crash.");
                     }
                 }
-                case 'R' -> this.turnRight(); // Turn right and append 'R' to the path
-                case 'L' -> this.turnLeft(); // Turn left and append 'L' to the path
-                default -> throw new IllegalArgumentException("Path string contains an illegal character.");
+                case 'R' ->
+                    this.turnRight(); // Turn right and append 'R' to the path
+                case 'L' ->
+                    this.turnLeft(); // Turn left and append 'L' to the path
+                default ->
+                    throw new IllegalArgumentException("Path string contains an illegal character.");
             }
         }
     }
-
 
     public void reset() {
         pos = entrance.clone();
@@ -114,11 +123,16 @@ public class MazeExplorer {
     private boolean nextTileEmpty() {
         try {
             return switch (this.facing) {
-                case UP -> !grid[pos[0] - 1][pos[1]];
-                case RIGHT -> !grid[pos[0]][pos[1] + 1];
-                case DOWN -> !grid[pos[0] + 1][pos[1]];
-                case LEFT -> !grid[pos[0]][pos[1] - 1];
-                default -> false;
+                case UP ->
+                    !grid[pos[0] - 1][pos[1]];
+                case RIGHT ->
+                    !grid[pos[0]][pos[1] + 1];
+                case DOWN ->
+                    !grid[pos[0] + 1][pos[1]];
+                case LEFT ->
+                    !grid[pos[0]][pos[1] - 1];
+                default ->
+                    false;
             };
         } catch (IndexOutOfBoundsException e) {
             return false;
@@ -143,6 +157,8 @@ public class MazeExplorer {
             }
             path += 'F';
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 }

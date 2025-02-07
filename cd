@@ -1,0 +1,41 @@
+[33mcommit 51f99eeb0c93f65ccaadae8be4a6b1343eca02c4[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: sakilanh <sakilanh@mcmaster.ca>
+Date:   Wed Jan 29 16:18:02 2025 -0500
+
+    cleaned classes and added factorized path functionality
+
+[33mcommit c2478c1a2e077f8adfbf2f5d805fd04be768e005[m
+Author: sakilanh <sakilanh@mcmaster.ca>
+Date:   Fri Jan 24 20:00:13 2025 -0500
+
+    entry and exit point detection issue and beta pathfinding algorithm implementation
+
+[33mcommit b9a31afe6114c0d60ada9f8f284a8c32aed85034[m
+Author: sakilanh <sakilanh@mcmaster.ca>
+Date:   Fri Jan 24 01:05:08 2025 -0500
+
+    validating and decoding the file
+
+[33mcommit 70fc47d1e984286603418dc5b60942cd0fbfbf10[m
+Author: sakilanh <sakilanh@mcmaster.ca>
+Date:   Tue Jan 21 22:29:44 2025 -0500
+
+    t01
+
+[33mcommit 4c7fdceb87555bf7292479590ee49e6d57bff569[m
+Author: Istvan David <david-istvan@users.noreply.github.com>
+Date:   Tue Jan 14 18:18:33 2025 -0500
+
+    Update README.md
+
+[33mcommit a7f64b40a75f45a0d89ee5aab0159f4f585ef12e[m
+Author: Sébastien Mosser <sebastien.mosser@gmail.com>
+Date:   Fri Jan 5 16:38:26 2024 -0500
+
+    initial starter code
+
+[33mcommit 23cc89482b1358ad81dd0252e8b07232c0c67bee[m
+Author: Sébastien Mosser <sebastien.mosser@gmail.com>
+Date:   Fri Jan 5 12:36:23 2024 -0500
+
+    Initial commit
